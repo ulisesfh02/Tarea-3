@@ -11,10 +11,10 @@ Tienda::Tienda(string nombreTienda, string emailTienda, string direccionTienda, 
     strcpy(this->telefono, telefono.c_str());
 }
 
-string Tienda::getInfoTienda(){
+string Tienda::obtenerInfoTienda(){
     stringstream subOut;
     string out;
-    subOut << nombreTienda << " " << emailTienda << " " << direccionTienda << " " << telefono;
+    subOut << this->nombreTienda << " " << this->emailTienda << " " << this->direccionTienda << " " << this->telefono;
     out = subOut.str();
     return out;
 }

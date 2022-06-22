@@ -10,13 +10,13 @@ namespace{
         Tienda tienda("Super Ulises", "superulises@u.com", "Casa de Ulises", "34567345");
 
         // Act - ejecute la operación
-        string actual = tienda.getInfoTienda();
+        string actual = tienda.obtenerInfoTienda();
         string esperada = "Super Ulises superulises@u.com Casa de Ulises 34567345";
 
         // Assert - valide los resultados
         EXPECT_EQ(esperada, actual);
     }
-    
+    /*
     TEST(Test_Tienda, Test_CrearTienda){
         /// AAA
 
@@ -24,11 +24,11 @@ namespace{
         Tienda tienda("Super Ulises", "superulises@u.com", "Casa de Ulises", "34567345");
 
         // Act - ejecute la operación
-        string actual = tienda.getInfoTienda();
+        string actual = tienda.obtenerInfoTienda();
         string esperada = "Super Ulises superulises@u.com Casa de Ulises 34567345";
 
         // Assert - valide los resultados
         EXPECT_EQ(esperada, actual);
     }
-    
+    */   
 }

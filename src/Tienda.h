@@ -13,7 +13,7 @@ class Tienda{
 
     public:
     Tienda(string, string, string, string);
-    string getInfoTienda();
+    string obtenerInfoTienda();
 };
 
 #endif
