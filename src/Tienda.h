@@ -4,6 +4,7 @@
 #include "Producto.h"
 #include <string>
 #include <vector>
+#include <iostream>
 using namespace std;
 
 class Tienda{
@@ -15,12 +16,18 @@ class Tienda{
     vector<Producto *> inventarioTienda;
 
     public:
+    Tienda();
     Tienda(string, string, string, string);
     ~Tienda();
     string obtenerInfoTienda();
 
     void insertarProducto(Producto*);
+    void eliminarProducto(int);
+    void modificarProducto(int, string, int);
     string consultarProductos();
+
+    void guardarEnArchivoBinario(ostream*);
+    void cargarDesdeArchivoBinario(istream*);
 };
 
 #endif

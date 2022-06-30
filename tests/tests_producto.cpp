@@ -1,6 +1,14 @@
 #include <gtest/gtest.h>
 #include "../src/Producto.h"
 
+/*
+    string obtenerInfoProducto();
+    int obtenerIdProducto();
+    void modificarValores(int, string, int);
+
+    friend ostream& operator << (ostream &o, const Producto*);
+*/
+
 namespace{
 
     TEST(Test_Producto, Test_CrearProducto){

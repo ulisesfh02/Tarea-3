@@ -11,8 +11,13 @@ class Producto{
     int existencias;
 
     public:
+    Producto();
     Producto(int, string, int);
     string obtenerInfoProducto();
+    int obtenerIdProducto();
+    void modificarValores(int, string, int);
+
+    friend ostream& operator << (ostream &o, const Producto*);
 };
 
 #endif
