@@ -2,6 +2,9 @@
 #include "../src/Tienda.h"
 #include "../src/Producto.h"
 #include "../src/ExcepcionModificarProductoInexistente.h"
+#include "../src/ExcepcionEliminarProductoInexistente.h"
+#include "../src/ExcepcionInsertarProductoExistente.h"
+#include "../src/ExcepcionTiendaSinProductos.h"
 #include <vector>
 #include <fstream>
 #include <string>
@@ -23,6 +26,23 @@ namespace{
         EXPECT_EQ(esperada, actual);
 
         delete tienda;
+    }
+
+    TEST(Test_Tienda, Test_Tienda_Sin_Productos)
+    {
+        /// AAA
+
+        // Arrange - configurar el escenario
+        Tienda *tienda = new Tienda();
+
+        // Act - ejecute la operación
+        EXPECT_THROW({
+            tienda->consultarProductos();
+        }, ExcepcionTiendaSinProductos);
+
+        delete tienda;
+
+        // Assert - valide los resultados
     }
     
     TEST(Test_Tienda, Test_InsertarYConsultarProducto){
@@ -49,6 +69,26 @@ namespace{
         delete tienda;
     }
 
+    TEST(Test_Tienda, Test_Insertar_Producto_Existente)
+    {
+        /// AAA
+
+        // Arrange - configurar el escenario
+        Tienda *tienda = new Tienda();
+        Producto *producto1 = new Producto(1, "Galletas", 23);
+        tienda->insertarProducto(producto1);
+
+        Producto *producto2 = new Producto(1, "Pollo", 12);
+        // Act - ejecute la operación
+        EXPECT_THROW({
+            tienda->insertarProducto(producto2);
+        }, ExcepcionInsertarProductoExistente);
+
+        delete tienda;
+
+        // Assert - valide los resultados
+    }
+
     TEST(Test_Tienda, Test_EliminarYConsultarProducto){
         /// AAA
 
@@ -73,6 +113,23 @@ namespace{
         delete tienda;
     }
 
+    TEST(Test_Tienda, Test_Eliminar_Producto_Inexistente)
+    {
+        /// AAA
+
+        // Arrange - configurar el escenario
+        Tienda *tienda = new Tienda();
+
+        // Act - ejecute la operación
+        EXPECT_THROW({
+            tienda->eliminarProducto(13);
+        }, ExcepcionEliminarProductoInexistente);
+
+        delete tienda;
+
+        // Assert - valide los resultados
+    }
+
     TEST(Test_Tienda, Test_ModificarYConsultarProducto){
         /// AAA
         
@@ -87,8 +144,6 @@ namespace{
 
         tienda->modificarProducto(2, "Galletas", 32);
 
-        
-
         // Act - ejecute la operación
         string actual = tienda->consultarProductos();
         string esperada = "1 Leche 4\n2 Galletas 32\n";
@@ -99,7 +154,7 @@ namespace{
         delete tienda;
     }
 
-    TEST(Calculadora_Test, Test_Modificar_Producto_Inexistente)
+    TEST(Test_Tienda, Test_Modificar_Producto_Inexistente)
     {
         /// AAA
 

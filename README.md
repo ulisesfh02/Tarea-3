@@ -1,7 +1,9 @@
 # Tarea-3
 
-Para compilar el programa, ejecute el comando:
+Para compilar el programa con sus tests, ejecute el comando:
 
-    make
+    make test
 
-Para utilizar el codigo compilado, ejecute:
+Para comprobar la ejecucion de los tests digite:
+
+    bin/tests

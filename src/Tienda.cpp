@@ -1,6 +1,9 @@
 #include "Tienda.h"
 #include "Producto.h"
 #include "ExcepcionModificarProductoInexistente.h"
+#include "ExcepcionEliminarProductoInexistente.h"
+#include "ExcepcionInsertarProductoExistente.h"
+#include "ExcepcionTiendaSinProductos.h"
 #include <cstring>
 #include <sstream>
 using namespace std;
@@ -34,22 +37,30 @@ string Tienda::obtenerInfoTienda(){
 }
 
 void Tienda::insertarProducto(Producto * producto){
+    int tamanioInventario= this->inventarioTienda.size();
+    for(int i=0; i < tamanioInventario; i++){
+        if(this->inventarioTienda[i]->obtenerIdProducto() == producto->obtenerIdProducto()){
+            throw ExcepcionInsertarProductoExistente();
+            return;
+        }
+    }
     this->inventarioTienda.push_back(producto);
 }
 
 void Tienda::eliminarProducto(int idProducto){
-    int inventario= this->inventarioTienda.size();
-    for(int i=0; i < inventario; i++){
+    int tamanioInventario= this->inventarioTienda.size();
+    for(int i=0; i < tamanioInventario; i++){
         if(this->inventarioTienda[i]->obtenerIdProducto() == idProducto){
             this->inventarioTienda.erase(this->inventarioTienda.begin()+i);
             return;
         }
     }
+    throw ExcepcionEliminarProductoInexistente();
 }
 
 void Tienda::modificarProducto(int idProducto, string nombreProducto, int existencias){
-    int inventario= this->inventarioTienda.size();
-    for(int i=0; i < inventario; i++){
+    int tamanioInventario= this->inventarioTienda.size();
+    for(int i=0; i < tamanioInventario; i++){
         if(this->inventarioTienda[i]->obtenerIdProducto() == idProducto){
             this->inventarioTienda[i]->modificarValores(idProducto, nombreProducto, existencias);
             return;
@@ -59,6 +70,9 @@ void Tienda::modificarProducto(int idProducto, string nombreProducto, int existe
 }
 
 string Tienda::consultarProductos(){
+    if(this->inventarioTienda.empty()){
+        throw ExcepcionTiendaSinProductos();
+    }
     stringstream subOut;
     string out;
     for(Producto * producto : this->inventarioTienda){
