@@ -28,6 +28,8 @@ class Tienda{
 
     void guardarEnArchivoBinario(ostream*);
     void cargarDesdeArchivoBinario(istream*);
+
+    friend ostream& operator << (ostream &o, const Tienda*);
 };
 
 #endif

@@ -1,14 +1,11 @@
 #include <gtest/gtest.h>
 #include "../src/Tienda.h"
 #include "../src/Producto.h"
+#include "../src/ExcepcionModificarProductoInexistente.h"
 #include <vector>
 #include <fstream>
-
-/*Se cubren los requerimientos de operaciones
-(insertar, modificar, eliminar, consultar)
-para los productos. La consulta de los productos es
-nada más poder listar todos los productos
-*/
+#include <string>
+#include <sstream>
 
 namespace{
 
@@ -102,6 +99,24 @@ namespace{
         delete tienda;
     }
 
+    TEST(Calculadora_Test, Test_Modificar_Producto_Inexistente)
+    {
+        /// AAA
+
+        // Arrange - configurar el escenario
+        Tienda *tienda = new Tienda();
+
+        // Act - ejecute la operación
+        EXPECT_THROW({
+            tienda->modificarProducto(1, "Galletas", 34);
+        }, ExcepcionModificarProductoInexistente);
+
+        delete tienda;
+
+        // Assert - valide los resultados
+    }
+
+
     TEST(Test_Tienda, Test_GuardarEnArchivoBinario){
         /// AAA
 
@@ -161,5 +176,61 @@ namespace{
         EXPECT_EQ(esperada, actual);
 
         delete tienda;
+    }
+
+    TEST(Test_Tienda, Test_GuardarYLeerArchivoBinario ){
+        /// AAA
+
+        // Arrange - configurar el escenario
+        Tienda * tiendaEsperada = new Tienda("Super Ulises", "superulises@u.com", "Casa de Ulises", "34567345");
+
+        Producto * producto1 = new Producto(4, "Coca Cola", 45);
+        tiendaEsperada->insertarProducto(producto1);
+
+        // Escribe arhcivo de prueba
+        ofstream archivoSalida;
+        archivoSalida.open("tienda_test.dat", ios::out|ios::binary);
+
+        if(!archivoSalida.is_open()){
+            cerr << "No se pudo abrir el archivo tienda.dat para escribir los datos";
+            FAIL();
+        }
+
+        tiendaEsperada->guardarEnArchivoBinario(&archivoSalida);
+
+        archivoSalida.close();
+
+        // Lee archivo de prueba
+
+        ifstream archivoEntrada;
+        archivoEntrada.open("tienda_test.dat", ios::in|ios::binary);
+
+        if(!archivoEntrada.is_open()){
+            cerr << "No se pudo abrir el archivo tienda.dat para leer los datos";
+            FAIL();
+        }
+
+        Tienda *tiendaLeida = new Tienda();
+
+        tiendaLeida->cargarDesdeArchivoBinario(&archivoEntrada);
+        
+        ostringstream streamSalidaTiendaLeida;
+        streamSalidaTiendaLeida << tiendaLeida;
+
+        ostringstream streamSalidaTiendaEsperada;
+        streamSalidaTiendaEsperada << tiendaEsperada;
+
+        delete tiendaEsperada;
+        delete tiendaLeida;
+
+        // Act - ejecute la operación
+        string esperada = "Tienda: Super Ulises\nCorreo: superulises@u.com\nDireccion: Casa de Ulises\nTelefono: 34567345\nProductos:\n4 Coca Cola 45\n";
+        string salidaTiendaEsperada = streamSalidaTiendaEsperada.str();
+
+        // Assert - valide los resultados
+        EXPECT_EQ(esperada, salidaTiendaEsperada);
+
+        string salidaTiendaLeidaDeArchivo = streamSalidaTiendaLeida.str();
+        EXPECT_EQ(esperada, salidaTiendaLeidaDeArchivo);
     }
 }

@@ -1,5 +1,6 @@
 #include "Tienda.h"
 #include "Producto.h"
+#include "ExcepcionModificarProductoInexistente.h"
 #include <cstring>
 #include <sstream>
 using namespace std;
@@ -54,6 +55,7 @@ void Tienda::modificarProducto(int idProducto, string nombreProducto, int existe
             return;
         }
     }
+    throw ExcepcionModificarProductoInexistente();
 }
 
 string Tienda::consultarProductos(){
@@ -90,4 +92,12 @@ void Tienda::cargarDesdeArchivoBinario(istream* streamEntrada){
         this->insertarProducto(producto);
     }
 
+}
+
+ostream& operator << (ostream &o, const Tienda *tienda) {
+    o << "Tienda: " << tienda->nombreTienda << "\nCorreo: " << tienda->emailTienda <<"\nDireccion: " << tienda->direccionTienda << "\nTelefono: " << tienda->telefono << "\nProductos:" << endl;
+    for(Producto * producto : tienda->inventarioTienda){
+        o << producto << endl;
+    }
+    return o;
 }
